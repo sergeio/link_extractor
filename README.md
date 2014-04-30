@@ -4,7 +4,7 @@ link_extractor
 Print a markdown-formatted bullet point with a link to the URL in your clipboard.
 
 The script will also do some smart things to simplify "fancy" urls.  More info
-in the [Usage](#Usage) Section.
+in the [Fanciness](#fanciness) Section.
 
 Why?
 ----
