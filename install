@@ -1,0 +1,7 @@
+#! /bin/bash
+
+mkdir -p ~/bin
+
+PROJECTDIR=$(cd $(dirname $0); pwd)
+ln -s $PROJECTDIR/link_extractor.py ~/bin/link_extractor
+chmod +x ~/bin/link_extractor
