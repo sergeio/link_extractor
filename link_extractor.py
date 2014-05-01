@@ -48,10 +48,11 @@ def transform_title(title, site):
     Handle some unicode, unescape HTML, simplify hierarchical titles, ...
 
     """
-    title = title.replace(u'\u2013', '-')
-    title = title.replace(u'\xb7', '-')
-    title = ''.join([x if ord(x) < 128 else '?' for x in title])
     title = HTMLParser().unescape(title)
+    substitutions = {u'\u2013': '-', u'\u2014': '-', u'\xb7': '-'}
+    for letter, replacement in substitutions.iteritems():
+        title = title.replace(letter, replacement)
+    title = ''.join([x if ord(x) < 128 else '?' for x in title])
     title = parse_fancy_titles(title, site)
     return title
 
