@@ -49,7 +49,8 @@ def transform_title(title, site):
 
     """
     title = HTMLParser().unescape(title)
-    substitutions = {u'\u2013': '-', u'\u2014': '-', u'\xb7': '-'}
+    substitutions = {
+        u'\u2013': '-', u'\u2014': '-', u'\u2019': "'",  u'\xb7': '-'}
     for letter, replacement in substitutions.iteritems():
         title = title.replace(letter, replacement)
     title = ''.join([x if ord(x) < 128 else '?' for x in title])
