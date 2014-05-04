@@ -147,7 +147,7 @@ def parse_fancy_titles(title, url):
 
     """
     title_parts = []
-    for separator in [' -- ', ' - ', ' | ', ' >> ']:
+    for separator in [' -- ', ' - ', ' | ', ' >> ', ' : ']:
         if separator in title:
             title_parts = title.split(separator)
             break
