@@ -117,6 +117,9 @@ def get_title_from_internet(url):
     except ValueError:
         print u'Bad URL: ' + repr(url)
         title = ''
+    except AttributeError:
+        # Usually happens when soup = None; e.g. when URL is an image or PDF.
+        title = ''
     except URLError:
         title = ''
 
