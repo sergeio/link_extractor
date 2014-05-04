@@ -57,6 +57,20 @@ How do I use '~' (tilde) in the context of paths? [stackoverflow.com]
 
 No more of those pesky dashes!
 
+Another example:
+
+Before defancifying:
+
+```
+Annoyance - Wikipedia, the free encyclopedia
+```
+
+And after:
+
+```
+Annoyance [en.wikipedia.org]
+```
+
 ### Vim
 
 Here is the relevant `.vimrc` line:
