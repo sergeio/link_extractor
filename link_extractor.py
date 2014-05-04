@@ -169,6 +169,8 @@ def parse_fancy_titles(title, site):
     similarity_function = make_title_site_similarity_function(site)
     scores = zip(map(similarity_function, title_parts), title_parts)
 
+    if not any(score for score, title_part in scores):
+        return title
     return min(scores)[1]
 
 
