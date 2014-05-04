@@ -60,42 +60,44 @@ def transform_title(title, site):
 
 def get_title_from_firefox_session(url):
     """Get the title for the `url` from Firefox, if it's recently opened."""
-    def get_url_and_tab_info_for_tab(tab):
-        """Return a dict where the title and url for the tab are stored.
+    def get_firefox_data():
+        try:
+            session = get_session_file()
+            with open(session, 'r') as json_session_file:
+                firefox_data = json.loads(json_session_file.read())
+        except IOError:
+            return ''
+        return firefox_data
 
-        Firefox stores closed tabs in a slightly different way from open ones,
-        hence the branching.
+    def walk(structure, criteria=lambda x: True):
+        """Yield each substructure in the nested `structure`.
+
+        Only yields things that match the `criteria` passed in.
 
         """
-        if 'entries' in tab:
-            place_where_url_stored = tab['entries'][0]
-        else:
-            place_where_url_stored = tab['state']['entries'][0]
-        return place_where_url_stored
+        if criteria(structure):
+            yield structure
+        if isinstance(structure, dict):
+            for value in structure.itervalues():
+                for structure in walk(value, criteria=criteria):
+                    yield structure
+        elif isinstance(structure, list) or isinstance(structure, tuple):
+            for item in structure:
+                for structure in walk(item, criteria=criteria):
+                    yield structure
 
-    def tab_matches_url(tab):
-        """Does the `tab` match the `url` we are looking for?"""
-        place_where_url_stored = get_url_and_tab_info_for_tab(tab)
-        tab_title = place_where_url_stored.get('title', '')
-        return tab_title and place_where_url_stored.get('url') == url
+    def search(structure, criteria):
+        """Search the `structure` for a substruct that matches `criteria`."""
+        for match in walk(structure, criteria):
+            return match
+        return {}
 
-    try:
-        session = get_session_file()
-        with open(session, 'r') as json_session_file:
-            firefox_data = json.loads(json_session_file.read())
-    except IOError:
-        return ''
+    def has_matching_url(element):
+        return isinstance(element, dict) and element.get('url') == url
 
-    tabs = firefox_data['windows'][0]['tabs']
-    closed_tabs = firefox_data['windows'][0]['_closedTabs']
-    all_tabs = chain(tabs, closed_tabs)
-
-    matching_tabs = filter(tab_matches_url, all_tabs)
-    if matching_tabs:
-        place_where_url_stored = get_url_and_tab_info_for_tab(matching_tabs[0])
-        title = place_where_url_stored.get('title', '')
-        return title
-    return ''
+    firefox_data = get_firefox_data()
+    matching_tab = search(firefox_data, has_matching_url)
+    return matching_tab.get('title')
 
 
 def get_session_file():
