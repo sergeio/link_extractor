@@ -31,7 +31,7 @@ def get_url_from_clipboard():
     process = Popen(['xclip', '-out'], stdout=PIPE)
     clipboard_contents = process.communicate()[0]
     url = clipboard_contents.strip()
-    return url
+    return url.decode('utf-8')
 
 
 def get_title(url):
