@@ -11,6 +11,7 @@ from subprocess import Popen, PIPE
 from urllib2 import urlopen, URLError
 from urlparse import urlparse
 import json
+import re
 
 from BeautifulSoup import BeautifulSoup
 
@@ -129,12 +130,18 @@ def get_title_from_internet(url):
 
 def make_title_site_similarity_function(site):
     """Curry the title_site_similarity function to only require a title."""
+    def remove_non_alphanumerics(word):
+        """Returns the `word` with nonalphanumerics (and underscores)."""
+        return re.sub(r'[^\w]', '', word)
+
     def title_site_similarity(title):
         """What portion of the words in the title are in the site?"""
         result = 0.0
         words = title.split(' ')
         for word in words:
-            if word.lower() in site:
+            word = word.lower()
+            word = remove_non_alphanumerics(word)
+            if word in site:
                 result += 1.0 / len(words)
 
         return result
