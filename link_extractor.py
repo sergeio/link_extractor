@@ -127,14 +127,14 @@ def get_title_from_internet(url):
     return title
 
 
-def make_title_site_similarity_function(url):
+def make_title_site_similarity_function(site):
     """Curry the title_site_similarity function to only require a title."""
     def title_site_similarity(title):
-        """What portion of the words in the title are in the url?"""
+        """What portion of the words in the title are in the site?"""
         result = 0.0
         words = title.split(' ')
         for word in words:
-            if word.lower() in url:
+            if word.lower() in site:
                 result += 1.0 / len(words)
 
         return result
@@ -142,7 +142,7 @@ def make_title_site_similarity_function(url):
     return title_site_similarity
 
 
-def parse_fancy_titles(title, url):
+def parse_fancy_titles(title, site):
     """Pull out the title of the page when the title has the site in it.
 
     >>> parse_fancy_titles(
@@ -159,7 +159,7 @@ def parse_fancy_titles(title, url):
     if not title_parts:
         return title
 
-    similarity_function = make_title_site_similarity_function(url)
+    similarity_function = make_title_site_similarity_function(site)
     scores = zip(map(similarity_function, title_parts), title_parts)
 
     return min(scores)[1]
