@@ -6,7 +6,6 @@ clipboard.
 """
 from HTMLParser import HTMLParser
 from glob import glob
-from itertools import chain
 from os import path
 from subprocess import Popen, PIPE
 from urllib2 import urlopen, URLError
@@ -61,6 +60,7 @@ def transform_title(title, site):
 def get_title_from_firefox_session(url):
     """Get the title for the `url` from Firefox, if it's recently opened."""
     def get_firefox_data():
+        """Get a dictionary with the Firefox state from disk."""
         try:
             session = get_session_file()
             with open(session, 'r') as json_session_file:
@@ -93,6 +93,7 @@ def get_title_from_firefox_session(url):
         return {}
 
     def has_matching_url(element):
+        """`element` has the url we are looking for."""
         return isinstance(element, dict) and element.get('url') == url
 
     firefox_data = get_firefox_data()
