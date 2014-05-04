@@ -116,7 +116,7 @@ def get_title_from_internet(url):
         soup = BeautifulSoup(html)
         title = soup.find('title').text
     except ValueError:
-        print u'Bad URL: ' + repr(url)
+        # Usually happens when the clipboard doesn't contain a URL.
         title = ''
     except AttributeError:
         # Usually happens when soup = None; e.g. when URL is an image or PDF.
