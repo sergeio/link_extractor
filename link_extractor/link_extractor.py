@@ -137,7 +137,7 @@ def make_title_site_similarity_function(site):
     def title_site_similarity(title):
         """What portion of the words in the title are in the site?"""
         result = 0.0
-        words = title.split(' ')
+        words = re.split(r'[. ]', title)
         for word in words:
             word = word.lower()
             word = remove_non_alphanumerics(word)
