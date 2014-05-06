@@ -51,3 +51,11 @@ class TestFakeFancyTitle(_BaseTest):
     url = 'http://www.infinityplus.co.uk/stories/under.htm'
     title = 'Understand - a novelette by Ted Chiang'
     expected = '  * [Understand - a novelette by Ted Chiang [infinityplus.co.uk]]({url})'.format(url=url)
+
+
+class TestUnicodeQuotesInTitle(_BaseTest):
+    """Should replace unicode quotes with ascii quotes."""
+
+    url = 'https://docs.python.org/2.7/library/multiprocessing.html'
+    title = u'16.6. multiprocessing - Process-based \u201cthreading\u201d interface - Python v2.7.6 documentation'
+    expected = u'  * [Process-based "threading" interface [docs.python.org]](https://docs.python.org/2.7/library/multiprocessing.html)'
