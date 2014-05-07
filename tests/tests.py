@@ -1,5 +1,5 @@
-from mock import patch
 from unittest import TestCase
+from unittest.mock import patch
 
 from link_extractor import link_extractor
 
