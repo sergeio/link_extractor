@@ -54,8 +54,15 @@ class TestFakeFancyTitle(_BaseTest):
 
 
 class TestUnicodeQuotesInTitle(_BaseTest):
-    """Should replace unicode quotes with ascii quotes."""
+    """Should output unicode quotes without changing them."""
 
     url = 'https://docs.python.org/2.7/library/multiprocessing.html'
-    title = u'16.6. multiprocessing - Process-based \u201cthreading\u201d interface - Python v2.7.6 documentation'
-    expected = u'  * [Process-based "threading" interface [docs.python.org]](https://docs.python.org/2.7/library/multiprocessing.html)'
+    title = '16.6. multiprocessing - Process-based \u201cthreading\u201d interface - Python v2.7.6 documentation'
+    expected = '  * [Process-based \u201cthreading\u201d interface [docs.python.org]]({url})'.format(url=url)
+
+
+class TestUnicodeInUrl(_BaseTest):
+    """Should process the unicode fine."""
+    url = u'https://en.wikipedia.org/wiki/Kurt_Gödel'
+    title = 'Kurt Gödel - Wikipedia, the free encyclopedia'
+    expected = '  * [Kurt Gödel [en.wikipedia.org]]({url})'.format(url=url)

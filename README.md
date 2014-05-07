@@ -16,7 +16,8 @@ Typing them out by hand is boring.
 
 Requires
 --------
-  * BeautifulSoup
+  * Python3
+  * BeautifulSoup4
   * Firefox
       - Not an actual requirement, but it will run faster if you use FF.
 
