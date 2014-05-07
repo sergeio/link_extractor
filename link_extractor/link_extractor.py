@@ -8,22 +8,38 @@ from HTMLParser import HTMLParser
 from glob import glob
 from os import path
 from subprocess import Popen, PIPE
+from locale import getpreferredencoding
 from urllib2 import urlopen, URLError
 from urlparse import urlparse
+import codecs
 import json
 import re
+import sys
 
 from BeautifulSoup import BeautifulSoup
 
 
 def main():
     """Returns the .md formatted bullet point for the URL in the clipboard."""
+    set_output_encoding()
     url = get_url_from_clipboard()
     site = urlparse(url).netloc.replace('www.', '')
     title = get_title(url)
     title = transform_title(title, site)
     return u'  * [{title} [{site}]]({url})'.format(
         title=title, site=site, url=url)
+
+def set_output_encoding():
+    """Python2 will default to ascii if it doesn't know where it's printing to.
+
+    When printing to the terminal, python will set the encoding to utf-8, but
+    when being piped to another process, python makes everything ascii.
+
+    We want to be able to output unicode in case our urls or titles contain
+    non-ascii characters.
+
+    """
+    sys.stdout = codecs.getwriter(getpreferredencoding())(sys.stdout)
 
 
 def get_url_from_clipboard():
