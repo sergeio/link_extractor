@@ -29,10 +29,10 @@ class TestSimpleTitle(_BaseTest):
 
 
 class TestFancyTitleHyphen(_BaseTest):
-    """Should strip out 'unit testing -' and '- Stack Overflow'."""
+    """Should strip out '- Stack Overflow'."""
 
     url = 'https://stackoverflow.com/questions/11155210/how-to-patch-python-class-using-mock-library'
-    title = 'unit testing - How to patch Python class using Mock library - Stack Overflow'
+    title = 'How to patch Python class using Mock library - Stack Overflow'
     expected = '  * [How to patch Python class using Mock library [stackoverflow.com]]({url})'.format(url=url)
 
 
@@ -66,3 +66,22 @@ class TestUnicodeInUrl(_BaseTest):
     url = u'https://en.wikipedia.org/wiki/Kurt_Gödel'
     title = 'Kurt Gödel - Wikipedia, the free encyclopedia'
     expected = '  * [Kurt Gödel [en.wikipedia.org]]({url})'.format(url=url)
+
+
+class TestUnicodeSeparatorInTitle(_BaseTest):
+    """Title is fancy, with a unicode hyphen; Should split and defancify."""
+
+    url = 'http://aeon.co/magazine/world-views/logic-of-buddhist-philosophy/'
+    title = 'The logic of Buddhist philosophy – Aeon'
+    expected = '  * [The logic of Buddhist philosophy [aeon.co]]({url})'.format(url=url)
+
+
+class TestMultipleTitlePartsHaveSimilarityZero(_BaseTest):
+    """The first two parts of the title (separated by hyphens) have a
+    similarity score of 0, since they don't appear in the site, while the
+    'Aeon' part does.  So we should keep the first two title parts, and throw
+    away the 'Aeon'."""
+
+    url = 'http://aeon.co/magazine/world-views/logic-of-buddhist-philosophy/'
+    title = 'The logic of Buddhist philosophy - Graham Priest - Aeon'
+    expected = '  * [The logic of Buddhist philosophy - Graham Priest [aeon.co]]({url})'.format(url=url)

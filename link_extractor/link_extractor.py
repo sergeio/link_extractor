@@ -156,21 +156,50 @@ def parse_fancy_titles(title, site):
     'Flubber'
 
     """
-    title_parts = []
-    for separator in [' -- ', ' - ', ' | ', ' >> ', ' : ']:
-        if separator in title:
-            title_parts = title.split(separator)
-            break
-
-    if not title_parts:
+    separator = get_separator_in_title(title)
+    if not separator:
         return title
 
-    similarity_function = make_title_site_similarity_function(site)
-    scores = list(zip(map(similarity_function, title_parts), title_parts))
-
+    title_parts = title.split(separator)
+    scores = score_parts_on_similarity(title_parts, site)
     if not any(score for score, title_part in scores):
         return title
-    return min(scores)[1]
+
+    zero_score_title_parts = [part for score, part in scores if score == 0]
+    if not zero_score_title_parts:
+        return min(scores)[1]
+
+    return separator.join(zero_score_title_parts)
+
+
+def get_separator_in_title(title):
+    """Return a separator in the title if there is one, otherwise None."""
+    unicode_separators = [
+        ' \u2010 ', ' \u002D ', ' \u00AD ', ' \u2011 ', ' \u2012 ', ' \u2013 ',
+        ' \u2014 ', ' \u2015 ', ' \u2027 ', ' \u00B7 ', ' \u2043']
+    ascii_separators = [' -- ', ' - ', ' | ', ' >> ', ' : ']
+    separators = unicode_separators + ascii_separators
+    separator = get_element_present_in_list(separators, title)
+    return separator
+
+
+def score_parts_on_similarity(title_parts, site):
+    """Score each part of the title based on similarity to the site.
+
+    Higher scores mean more similarity.
+    Returns (score, title_part) pairs.
+
+    """
+    similarity_function = make_title_site_similarity_function(site)
+    return [(similarity_function(part), part) for part in title_parts]
+
+
+def get_element_present_in_list(elements, list_):
+    """Return the first element that is present in `list`, otherwise None."""
+    for element in elements:
+        if element in list_:
+            return element
+    return None
 
 
 if __name__ == '__main__':
