@@ -85,3 +85,12 @@ class TestMultipleTitlePartsHaveSimilarityZero(_BaseTest):
     url = 'http://aeon.co/magazine/world-views/logic-of-buddhist-philosophy/'
     title = 'The logic of Buddhist philosophy - Graham Priest - Aeon'
     expected = '  * [The logic of Buddhist philosophy - Graham Priest [aeon.co]]({url})'.format(url=url)
+
+
+class TestTitleAndSiteNameHaveArticles(_BaseTest):
+    """Should not count things like "the" towards the score of a title-part
+    when defancifying titles."""
+
+    url = 'http://www.theguardian.com/world/2013/jul/31/nsa-top-secret-program-online-data'
+    title = 'XKeyscore: NSA tool collects \'nearly everything a user does on the internet\' | World news | theguardian.com'
+    expected = '  * [XKeyscore: NSA tool collects \'nearly everything a user does on the internet\' | World news [theguardian.com]]({url})'.format(url=url)

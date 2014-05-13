@@ -133,10 +133,17 @@ def make_title_site_similarity_function(site):
         """Returns the `word` with nonalphanumerics (and underscores)."""
         return re.sub(r'[^\w]', '', word)
 
-    def title_site_similarity(title):
-        """What portion of the words in the title are in the site?"""
+    def title_site_similarity(title_part):
+        """What portion of the words in the title part are in the site?
+
+        Don't count very common words like "the" towards the score.
+        http://www.world-english.org/english500.htm
+
+        """
+        common_words = ['the', 'of', 'to', 'and', 'a', 'in', 'is', 'it']
         result = 0.0
-        words = re.split(r'[. ]', title)
+        words = re.split(r'[. ]', title_part)
+        words = [word for word in words if word not in common_words]
         for word in words:
             word = word.lower()
             word = remove_non_alphanumerics(word)
