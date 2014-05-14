@@ -147,7 +147,7 @@ def make_title_site_similarity_function(site):
         for word in words:
             word = word.lower()
             word = remove_non_alphanumerics(word)
-            if word in site:
+            if word and word in site:
                 result += 1.0 / len(words)
 
         return result

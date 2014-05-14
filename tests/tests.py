@@ -58,7 +58,7 @@ class TestUnicodeQuotesInTitle(_BaseTest):
 
     url = 'https://docs.python.org/2.7/library/multiprocessing.html'
     title = '16.6. multiprocessing - Process-based \u201cthreading\u201d interface - Python v2.7.6 documentation'
-    expected = '  * [Process-based \u201cthreading\u201d interface [docs.python.org]]({url})'.format(url=url)
+    expected = '  * [16.6. multiprocessing - Process-based \u201cthreading\u201d interface [docs.python.org]]({url})'.format(url=url)
 
 
 class TestUnicodeInUrl(_BaseTest):
@@ -94,3 +94,11 @@ class TestTitleAndSiteNameHaveArticles(_BaseTest):
     url = 'http://www.theguardian.com/world/2013/jul/31/nsa-top-secret-program-online-data'
     title = 'XKeyscore: NSA tool collects \'nearly everything a user does on the internet\' | World news | theguardian.com'
     expected = '  * [XKeyscore: NSA tool collects \'nearly everything a user does on the internet\' | World news [theguardian.com]]({url})'.format(url=url)
+
+
+class TestUnicodeWord(_BaseTest):
+    """When one "word" is 100% unicode, make sure it isn't automatically count
+    towards the score of a title-part when defancifying titles."""
+    url = 'https://www.youtube.com/watch?v=iCqwwTfXr1Q'
+    title = "▶ Day[9]\'s Musings - Being Relentlessly Positive - Youtube"
+    expected = '  * [▶ Day[9]\'s Musings - Being Relentlessly Positive [youtube.com]]({url})'.format(url=url)
