@@ -66,6 +66,8 @@ def get_title_from_firefox_session(url):
                 firefox_data = json.loads(json_session_file.read())
         except IOError:
             return ''
+        except IndexError:
+            return ''
         return firefox_data
 
     def walk(structure, criteria=lambda x: True):
