@@ -63,6 +63,7 @@ class TestUnicodeQuotesInTitle(_BaseTest):
 
 class TestUnicodeInUrl(_BaseTest):
     """Should process the unicode fine."""
+
     url = 'https://en.wikipedia.org/wiki/Kurt_Gödel'
     title = 'Kurt Gödel - Wikipedia, the free encyclopedia'
     expected = '  * [Kurt Gödel [en.wikipedia.org]]({url})'.format(url=url)
