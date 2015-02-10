@@ -52,6 +52,7 @@ def transform_title(title, site):
 
     """
     title = HTMLParser().unescape(title)
+    title = title.strip()
     title = parse_fancy_titles(title, site)
     return title
 

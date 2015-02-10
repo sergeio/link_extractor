@@ -63,7 +63,7 @@ class TestUnicodeQuotesInTitle(_BaseTest):
 
 class TestUnicodeInUrl(_BaseTest):
     """Should process the unicode fine."""
-    url = u'https://en.wikipedia.org/wiki/Kurt_Gödel'
+    url = 'https://en.wikipedia.org/wiki/Kurt_Gödel'
     title = 'Kurt Gödel - Wikipedia, the free encyclopedia'
     expected = '  * [Kurt Gödel [en.wikipedia.org]]({url})'.format(url=url)
 
@@ -99,6 +99,15 @@ class TestTitleAndSiteNameHaveArticles(_BaseTest):
 class TestUnicodeWord(_BaseTest):
     """When one "word" is 100% unicode, make sure it isn't automatically count
     towards the score of a title-part when defancifying titles."""
+
     url = 'https://www.youtube.com/watch?v=iCqwwTfXr1Q'
     title = "▶ Day[9]\'s Musings - Being Relentlessly Positive - Youtube"
     expected = '  * [▶ Day[9]\'s Musings - Being Relentlessly Positive [youtube.com]]({url})'.format(url=url)
+
+
+class TestTitleWithNewLines(_BaseTest):
+    """Should strip out the carriage returns when defancifying."""
+
+    url = 'http://lesswrong.com/lw/jd/human_evil_and_muddled_thinking/'
+    title = '\nHuman Evil and Muddled Thinking - Less Wrong\n'
+    expected = '  * [Human Evil and Muddled Thinking [lesswrong.com]]({url})'.format(url=url)
