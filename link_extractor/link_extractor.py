@@ -6,11 +6,12 @@ clipboard.
 """
 from glob import glob
 from html.parser import HTMLParser
+from http.cookiejar import CookieJar
 from os import path
 from subprocess import Popen, PIPE
 from urllib.error import URLError
 from urllib.parse import unquote, urlparse
-from urllib.request import urlopen
+from urllib.request import build_opener, HTTPCookieProcessor
 import json
 import re
 
@@ -115,7 +116,8 @@ def get_session_file():
 def get_title_from_internet(url):
     """Get the title of the `url` from the internet."""
     try:
-        html = urlopen(url).read()
+        opener = build_opener(HTTPCookieProcessor(CookieJar()))
+        html = opener.open(url).read()
         soup = BeautifulSoup(html)
         title = soup.find('title').text
     except ValueError:
