@@ -117,6 +117,7 @@ def get_title_from_internet(url):
     """Get the title of the `url` from the internet."""
     try:
         opener = build_opener(HTTPCookieProcessor(CookieJar()))
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
         html = opener.open(url).read()
         soup = BeautifulSoup(html)
         title = soup.find('title').text
